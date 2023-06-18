@@ -6,10 +6,10 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = 'VERSION_11'
+	archivesBaseName = "ROOT"
 }
 
 repositories {
@@ -25,3 +25,14 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+task copyFrontend(type: Copy, dependsOn:'frontend:build') {
+  from 'frontend/build/'
+  into 'build/resources/main/static/'
+}
+task clearFrontend(type: Delete) {
+	delete 'build/resources/main/static'
+	delete 'build/resources/main/templates'    
+}
+compileJava.dependsOn(clearFrontend)   
+processResources.dependsOn(copyFrontend)
