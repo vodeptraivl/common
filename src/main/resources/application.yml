@@ -1,0 +1,29 @@
+server:
+    port: 8090
+    compression:
+        enabled: true
+        mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css,image/jpeg
+        min-response-size: 1024
+    tomcat:
+        max-http-form-post-size: 1000MB
+
+spring.servlet.multipart.max-file-size: 10000MB
+spring.servlet.multipart.max-request-size: 10000MB
+
+spring:
+    datasource:
+        url: jdbc:log4jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=bizvm02)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=dbsf)))
+        username: VOLA
+        password: Pass12#$
+        driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: biz.pipe.notification@gmail.com
+        password: pxikvdtzirhvktfj
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true

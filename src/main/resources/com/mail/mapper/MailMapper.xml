@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mail.mapper.MailMapper">
+    <select id="getRecipient" resultType="String">
+        select RECIPIENT from CONFIGMAIL where system = #{system} and type = #{type}
+    </select>
+
+    <select id="getTemplate" resultType="com.mail.domain.Mailtemplate">
+        select * from TEMPLATEMAIL where id = #{id}
+    </select>
+</mapper>
