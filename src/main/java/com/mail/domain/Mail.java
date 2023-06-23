@@ -8,4 +8,5 @@ public class Mail {
     private String commitId;
     private int form;
     private String locations;
+    private String message;
 }

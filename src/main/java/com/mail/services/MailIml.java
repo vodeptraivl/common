@@ -62,9 +62,12 @@ public class MailIml {
             }
             String body = templateMail.getBody();
             body = body.replace("${SYSTEM}",mail.getSystem());
-            body = body.replace("${GIT_COMMIT}",mail.getCommitId());
+            body = body.replace("${COMMIT_ID}",mail.getCommitId());
             body = body.replace("${LINK}",mail.getLocations());
-            mimeMessageHelper.setText(body);
+            if(!ObjectUtils.isEmpty(mail.getMessage())){
+                body = body.replace("${MESSAGE}",mail.getMessage());
+            }
+            mimeMessageHelper.setText(body ,true);
 
             mimeMessageHelper.setSubject(templateMail.getSubject());
 
