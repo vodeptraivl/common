@@ -61,12 +61,10 @@ public class MailIml {
                 mimeMessageHelper.setCc(recipientsCC);
             }
             String body = templateMail.getBody();
-            body = body.replace("${SYSTEM}",mail.getSystem());
-            body = body.replace("${COMMIT_ID}",mail.getCommitId());
-            body = body.replace("${LINK}",mail.getLocations());
-            if(!ObjectUtils.isEmpty(mail.getMessage())){
-                body = body.replace("${MESSAGE}",mail.getMessage());
-            }
+            if(!ObjectUtils.isEmpty(mail.getSystem()))body = body.replace("${SYSTEM}",mail.getSystem());
+            if(!ObjectUtils.isEmpty(mail.getCommitId()))body = body.replace("${COMMIT_ID}",mail.getCommitId());
+            if(!ObjectUtils.isEmpty(mail.getLocations()))body = body.replace("${LINK}",mail.getLocations());
+            if(!ObjectUtils.isEmpty(mail.getMessage()))body = body.replace("${MESSAGE}",mail.getMessage());
             mimeMessageHelper.setText(body ,true);
 
             mimeMessageHelper.setSubject(templateMail.getSubject());
