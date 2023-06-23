@@ -5,6 +5,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.mail.domain.EmailDetails;
+import com.mail.domain.Mail;
 import com.mail.domain.Mailtemplate;
 import com.mail.mapper.MailMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +37,13 @@ public class MailIml {
 
     @Value("${spring.mail.username}") private String sender;
 
-    public String sendSimpleMail(String sys, int formId, String commitId) throws Exception
+    public String sendSimpleMail(Mail mail) throws Exception
     {
 
         try {
-            String[] recipients = mapper.getRecipient(sys,TO);
-            String[] recipientsCC = mapper.getRecipient(sys,CC);
-            Mailtemplate templateMail = mapper.getTemplate(formId);
+            String[] recipients = mapper.getRecipient(mail.getSystem(),TO);
+            String[] recipientsCC = mapper.getRecipient(mail.getSystem(),CC);
+            Mailtemplate templateMail = mapper.getTemplate(mail.getForm());
 
             if ( ObjectUtils.isEmpty(recipients)) {
                 return NO_RECIPIENT;
@@ -60,8 +61,9 @@ public class MailIml {
                 mimeMessageHelper.setCc(recipientsCC);
             }
             String body = templateMail.getBody();
-            body = body.replace("${SYSTEM}",sys);
-            body = body.replace("${GIT_COMMIT}",commitId);
+            body = body.replace("${SYSTEM}",mail.getSystem());
+            body = body.replace("${GIT_COMMIT}",mail.getCommitId());
+            body = body.replace("${LINK}",mail.getLocations());
             mimeMessageHelper.setText(body);
 
             mimeMessageHelper.setSubject(templateMail.getSubject());
