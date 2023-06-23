@@ -12,7 +12,7 @@ spring.servlet.multipart.max-request-size: 10000MB
 
 spring:
     datasource:
-        url: jdbc:log4jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=bizvm02)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=dbsf)))
+        url: jdbc:log4jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.253.202)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=dbsf)))
         username: VOLA
         password: Pass12#$
         driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
