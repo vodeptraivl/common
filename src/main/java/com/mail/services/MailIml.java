@@ -40,7 +40,7 @@ public class MailIml {
 
     @Value("${spring.mail.username}") private String sender;
 
-    @Value("commonApp.docker.jobs.dir") private String dockerLib;
+    @Value("${commonApp.docker.jobs.dir}") private String dockerLib;
 
     public String sendSimpleMail(Mail mail) throws Exception
     {
