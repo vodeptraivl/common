@@ -78,6 +78,7 @@ public class MailController {
                 "\tat org.kohsuke.groovy.sandbox.impl.Checker.checkedCall(Checker.java:152)\n" +
                 "\tat com.cloudbees.groovy.cps.sandbox.SandboxInvoker.methodCall(SandboxInvoker.java:17)");
         mail.setCommitId("4f6ee8e0087f5f004c0ee94793b90770fcd06c77");
+        mail.setError(true);
         String status = emailService.sendSimpleMail(mail);
 
         return status;

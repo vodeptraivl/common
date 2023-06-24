@@ -27,3 +27,7 @@ spring:
                     auth: true
                     starttls:
                         enable: true
+commonApp:
+    docker:
+        jobs:
+            dir: /var/lib/docker/volumes/jenkins_home/_data/jobs

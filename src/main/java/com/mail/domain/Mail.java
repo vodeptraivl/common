@@ -9,4 +9,7 @@ public class Mail {
     private int form;
     private String locations;
     private String message;
+    private boolean error;
+    private String job;
+    private int build;
 }

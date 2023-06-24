@@ -11,10 +11,13 @@ import com.mail.mapper.MailMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+
+import java.io.File;
 
 @Service
 @Slf4j
@@ -37,6 +40,8 @@ public class MailIml {
 
     @Value("${spring.mail.username}") private String sender;
 
+    @Value("commonApp.docker.jobs.dir") private String dockerLib;
+
     public String sendSimpleMail(Mail mail) throws Exception
     {
 
@@ -54,21 +59,18 @@ public class MailIml {
             MimeMessageHelper mimeMessageHelper;
             mimeMessage.setFrom(new InternetAddress(sender, SENDER_ALIAS));
             mimeMessageHelper
-                    = new MimeMessageHelper(mimeMessage, false);
+                    = new MimeMessageHelper(mimeMessage, mail.isError());
             mimeMessageHelper.setTo(recipients);
 
             if(!ObjectUtils.isEmpty(recipientsCC)) {
                 mimeMessageHelper.setCc(recipientsCC);
             }
-            String body = templateMail.getBody();
-            if(!ObjectUtils.isEmpty(mail.getSystem()))body = body.replace("${SYSTEM}",mail.getSystem());
-            if(!ObjectUtils.isEmpty(mail.getCommitId()))body = body.replace("${COMMIT_ID}",mail.getCommitId());
-            if(!ObjectUtils.isEmpty(mail.getLocations()))body = body.replace("${LINK}",mail.getLocations());
-            if(!ObjectUtils.isEmpty(mail.getMessage()))body = body.replace("${MESSAGE}",mail.getMessage());
-            mimeMessageHelper.setText(body ,true);
-
+            this.handleMailBody(mail,templateMail);
+            mimeMessageHelper.setText(templateMail.getBody() ,true);
             mimeMessageHelper.setSubject(templateMail.getSubject());
-
+            if(mail.isError()){
+                this.attachFile(mail,mimeMessageHelper);
+            }
             javaMailSender.send(mimeMessage);
             return SUCCESS;
         }
@@ -77,5 +79,20 @@ public class MailIml {
             log.error(e.getMessage());
             return ERROR;
         }
+    }
+
+    private void handleMailBody(Mail mail, Mailtemplate templateMail){
+        String body = templateMail.getBody();
+        if(!ObjectUtils.isEmpty(mail.getSystem()))body = body.replace("${SYSTEM}",mail.getSystem());
+        if(!ObjectUtils.isEmpty(mail.getCommitId()))body = body.replace("${COMMIT_ID}",mail.getCommitId());
+        if(!ObjectUtils.isEmpty(mail.getLocations()))body = body.replace("${LINK}",mail.getLocations());
+        if(!ObjectUtils.isEmpty(mail.getMessage()))body = body.replace("${MESSAGE}",mail.getMessage());
+        templateMail.setBody(body);
+    }
+
+    private void attachFile(Mail mail, MimeMessageHelper mimeMessageHelper) throws Exception{
+        String errorPath = "C:/Users/vola/Desktop/learn/pipeline";//dockerLib +"/"+mail.getJob()+"/builds/"+mail.getBuild()+"/log";
+        FileSystemResource file = new FileSystemResource(new File(errorPath));
+        mimeMessageHelper.addAttachment(file.getFilename(), file);
     }
 }
