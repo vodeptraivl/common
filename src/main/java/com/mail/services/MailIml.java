@@ -91,7 +91,7 @@ public class MailIml {
     }
 
     private void attachFile(Mail mail, MimeMessageHelper mimeMessageHelper) throws Exception{
-        String errorPath = "C:/Users/vola/Desktop/learn/pipeline";//dockerLib +"/"+mail.getJob()+"/builds/"+mail.getBuild()+"/log";
+        String errorPath = dockerLib +"/"+mail.getJob()+"/builds/"+mail.getBuild()+"/log";
         FileSystemResource file = new FileSystemResource(new File(errorPath));
         mimeMessageHelper.addAttachment(file.getFilename(), file);
     }
